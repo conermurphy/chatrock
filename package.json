@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.511.0",
+    "@aws-sdk/lib-dynamodb": "^3.511.0",
+    "@clerk/nextjs": "^4.29.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "lucide-react": "^0.323.0",
