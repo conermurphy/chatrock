@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.511.0",
     "@aws-sdk/client-dynamodb": "^3.511.0",
     "@aws-sdk/lib-dynamodb": "^3.511.0",
     "@clerk/nextjs": "^4.29.7",
