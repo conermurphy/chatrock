@@ -9,7 +9,7 @@ const dynamoConfig = {
   region: process.env.AWS_API_REGION || '',
 };
 
-export const dbClient = DynamoDBDocument.from(new DynamoDB(dynamoConfig), {
+export const db = DynamoDBDocument.from(new DynamoDB(dynamoConfig), {
   marshallOptions: {
     convertEmptyValues: true,
     removeUndefinedValues: true,

@@ -3,6 +3,7 @@ import { Inter as FontSans } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { ClerkProvider } from '@clerk/nextjs';
+import { Sidebar } from '@/components/sidebar';
 
 export const fontSans = FontSans({
   subsets: ['latin'],
@@ -24,11 +25,12 @@ export default function RootLayout({
       <html lang="en">
         <body
           className={cn(
-            'min-h-screen bg-background font-sans antialiased',
+            'flex flex-row min-h-screen bg-background font-sans antialiased text-stone-700 bg-slate-100 overflow-hidden',
             fontSans.variable
           )}
         >
-          {children}
+          <Sidebar />
+          <div className="w-full h-screen">{children}</div>
         </body>
       </html>
     </ClerkProvider>

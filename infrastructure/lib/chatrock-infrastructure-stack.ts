@@ -7,8 +7,8 @@ export class ChatRockIntfrastructureStack extends cdk.Stack {
     super(scope, id, props);
 
     new Table(this, 'ChatRockDB', {
-      partitionKey: { name: 'PK', type: AttributeType.STRING },
-      sortKey: { name: 'SK', type: AttributeType.STRING },
+      partitionKey: { name: 'pk', type: AttributeType.STRING },
+      sortKey: { name: 'sk', type: AttributeType.STRING },
       billingMode: BillingMode.PAY_PER_REQUEST,
       tableName: 'ChatRockDB',
       removalPolicy: cdk.RemovalPolicy.DESTROY,
