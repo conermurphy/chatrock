@@ -1,50 +1,53 @@
 'use client';
 
-import { Button } from './ui/button';
-import { Input } from './ui/input';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { promptFormSchema } from '@/schema';
 import { PromptFormInputs } from '@/types';
-import { usePathname, useRouter } from 'next/navigation';
-import { createConversation } from '@/app/actions/create-conversation';
 
-export function MessageInput() {
+interface IProps {
+  isGenerating?: boolean;
+  uuid?: string;
+  onSubmitHandler: (data: PromptFormInputs) => Promise<void>;
+}
+
+export function GenericPromptInput({
+  isGenerating = false,
+  uuid,
+  onSubmitHandler,
+}: IProps) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<PromptFormInputs>({
     resolver: zodResolver(promptFormSchema),
-  });
-  const pathname = usePathname();
-  const router = useRouter();
-  const pageName = pathname === '/' ? 'home' : 'promptPage';
-
-  const onSubmitHandlers: {
-    home: (data: PromptFormInputs) => void;
-    promptPage: (data: PromptFormInputs) => void;
-  } = {
-    home: async (data) => {
-      const { uuid } = await createConversation(data.prompt);
-
-      router.push(`/${uuid}`);
+    defaultValues: {
+      prompt: '',
     },
-    promptPage: (data) => {},
-  };
+  });
 
   return (
     <div className="flex flex-col gap-1 w-full items-center max-w-xl">
       <form
         className="flex w-full space-x-2"
-        onSubmit={handleSubmit(onSubmitHandlers[pageName])}
+        onSubmit={handleSubmit((data) => {
+          onSubmitHandler(data);
+          reset();
+        })}
       >
         <Input
           type="text"
           placeholder="What would you like to ask?"
+          disabled={isGenerating}
           {...register('prompt', { required: true })}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={isGenerating}>
+          Submit
+        </Button>
       </form>
       {errors.prompt?.message && (
         <p className="text-sm text-red-600 self-start">

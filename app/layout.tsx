@@ -25,12 +25,14 @@ export default function RootLayout({
       <html lang="en">
         <body
           className={cn(
-            'flex flex-row min-h-screen bg-background font-sans antialiased text-stone-700 bg-slate-100 overflow-hidden',
+            'flex flex-row min-h-screen bg-background font-sans antialiased text-stone-700 bg-slate-100',
             fontSans.variable
           )}
         >
           <Sidebar />
-          <div className="w-full h-screen">{children}</div>
+          <div className="min-w-max w-full h-screen overflow-y-auto">
+            {children}
+          </div>
         </body>
       </html>
     </ClerkProvider>

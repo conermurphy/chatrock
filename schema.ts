@@ -22,4 +22,11 @@ const conversationSchema = z.object({
   uuid: z.string(),
 });
 
-export { promptFormSchema, conversationSchema };
+const bedrockResponseSchema = z.object({
+  generation: z.string(),
+  prompt_token_count: z.number(),
+  generation_token_count: z.number(),
+  stop_reason: z.string(),
+});
+
+export { promptFormSchema, conversationSchema, bedrockResponseSchema };

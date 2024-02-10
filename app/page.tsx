@@ -1,4 +1,4 @@
-import { MessageInput } from '@/components/message-input';
+import { HomePromptInput } from '@/components/prompt-inputs/home';
 
 export default function Home() {
   return (
@@ -7,7 +7,7 @@ export default function Home() {
         <h1 className="font-bold text-2xl">What would you like to ask?</h1>
         <p>Ask me anything!</p>
       </div>
-      <MessageInput />
+      <HomePromptInput />
     </main>
   );
 }

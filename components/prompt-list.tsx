@@ -2,12 +2,12 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { getAllConversations } from '@/app/actions/get-all-conversations';
+import { getAllConversations } from '@/app/actions/db/get-all-conversations';
 import { z } from 'zod';
 import { conversationSchema } from '@/schema';
 import { usePathname, useRouter } from 'next/navigation';
 import { IoTrashBin } from 'react-icons/io5';
-import { deprecateConversation } from '@/app/actions/deprecate-conversation';
+import { deprecateConversation } from '@/app/actions/db/deprecate-conversation';
 
 export default function PromptList() {
   const pathname = usePathname();
