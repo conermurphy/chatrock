@@ -28,7 +28,7 @@ export default function Page({ params: { uuid } }: IPageProps) {
   }, []);
 
   useEffect(() => {
-    async function generateInitialResponse() {
+    async function generateAIResponse() {
       if (isGenerating) return;
 
       setIsGenerating(true);
@@ -46,7 +46,7 @@ export default function Page({ params: { uuid } }: IPageProps) {
       setIsGenerating(false);
     }
 
-    generateInitialResponse();
+    generateAIResponse();
   }, [conversation]);
 
   return (
