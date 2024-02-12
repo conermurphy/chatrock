@@ -2,7 +2,7 @@
 
 Chatrock is a simple chat application (E.g. ChatGPT), that uses AWS Bedrock as the AI model to generate responses. It also uses Clerk for authentication and AWS DynamoDB for storing the chat messages and their history. Here's it in action! 👇
 
-https://github.com/conermurphy/chatrock/blob/main/example-video.mp4
+![](https://github.com/conermurphy/chatrock/blob/main/example-video.mp4)
 
 ## Tech Stack
 
