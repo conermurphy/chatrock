@@ -11,16 +11,19 @@ export const generateResponse = async (uuid: string) => {
   const currentUserData = await currentUser();
   const { conversation } = await getOneConversation(uuid);
 
+  // Build the prompt for the AI using the correct syntax
   const prompt = conversation
     .map(({ author, content }) => {
       if (author === 'ai') {
         return `${content}`;
       } else {
+        // Wrap any user inputs in [INST] blocks
         return `[INST]${content}[/INST]`;
       }
     })
     .join('');
 
+  // Prepare the input for the AI model
   const input = {
     accept: 'application/json',
     contentType: 'application/json',
@@ -36,8 +39,10 @@ export const generateResponse = async (uuid: string) => {
   let generation = '';
 
   try {
+    // Invoke the Bedrock AI model with the prepared input
     const bedrockResponse = await bedrock.send(new InvokeModelCommand(input));
 
+    // Parse the response from Bedrock to get the generated text
     const response = bedrockResponseSchema.parse(
       JSON.parse(new TextDecoder().decode(bedrockResponse.body))
     );
@@ -49,6 +54,7 @@ export const generateResponse = async (uuid: string) => {
   }
 
   try {
+    // Update the conversation in the database adding the updated response to the end of the conversation
     const { Attributes } = await db.send(
       new UpdateCommand({
         TableName: process.env.DB_TABLE_NAME,
@@ -70,6 +76,7 @@ export const generateResponse = async (uuid: string) => {
       })
     );
 
+    // Return the updated conversation to the frontend
     return conversationSchema.parse(Attributes);
   } catch (error) {
     console.log(error);

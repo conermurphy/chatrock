@@ -14,6 +14,7 @@ export function ConversationDisplay({ uuid }: IProps) {
   const { conversation, setConversation, isGenerating, setIsGenerating } =
     useConversation();
 
+  // When the page loads for the first time, fetch the conversation for the page UUID from the DB and add it to the context
   useEffect(() => {
     async function fetchConversation() {
       const conversation = await getOneConversation(uuid);
@@ -23,6 +24,7 @@ export function ConversationDisplay({ uuid }: IProps) {
     fetchConversation();
   }, []);
 
+  // When the conversation is updated run this useEffect
   useEffect(() => {
     async function generateAIResponse() {
       if (isGenerating) return;
@@ -31,11 +33,16 @@ export function ConversationDisplay({ uuid }: IProps) {
 
       const lastAuthor = conversation?.conversation.at(-1)?.author;
 
+      /**
+       * If the lastAuthor is the 'ai' then we know the user needs to respond so return early and update the context state
+       * If the conversation is falsy, also return and and update the context state
+       */
       if (!conversation || lastAuthor === 'ai') {
         setIsGenerating(false);
         return;
       }
 
+      // Generate a new reply from the AI and update the conversation in the context state below.
       const generatedReponse = await generateResponse(uuid);
 
       setConversation(generatedReponse);

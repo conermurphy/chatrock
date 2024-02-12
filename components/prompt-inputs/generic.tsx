@@ -16,12 +16,14 @@ export function GenericPromptInput({
   isGenerating = false,
   onSubmitHandler,
 }: IProps) {
+  // Create a new useForm instance from react-hook-form to handle our form's state
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<PromptFormInputs>({
+    // Pass the form's values using our Zod schema to ensure the inputs pass validation
     resolver: zodResolver(promptFormSchema),
     defaultValues: {
       prompt: '',
@@ -33,6 +35,7 @@ export function GenericPromptInput({
       <form
         className="flex w-full space-x-2"
         onSubmit={handleSubmit((data) => {
+          // Run the onSubmitHandler passed into the component and then reset the form after submission
           onSubmitHandler(data);
           reset();
         })}

@@ -12,11 +12,12 @@ import { deprecateConversation } from '@/app/actions/db/deprecate-conversation';
 export default function PromptList() {
   const pathname = usePathname();
   const router = useRouter();
-  const [deleteing, setDeleting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [prompts, setPrompts] = useState<
     z.infer<typeof conversationSchema>[] | null
   >();
 
+  // When the pathname or the deleting state changes, fetch all of the conversations from the DB and update the state 
   useEffect(() => {
     const fetchPrompts = async () => {
       setPrompts(await getAllConversations());
@@ -24,7 +25,7 @@ export default function PromptList() {
     };
 
     fetchPrompts();
-  }, [pathname, deleteing]);
+  }, [pathname, deleting]);
 
   return (
     <div className="flex flex-col gap-2 grow">

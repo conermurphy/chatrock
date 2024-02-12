@@ -7,10 +7,12 @@ import { IoAddOutline } from 'react-icons/io5';
 export async function Sidebar() {
   const currentUserData = await currentUser();
 
+  // If the user data is falsy, return null. This is needed on the auth pages as the user is authenticated then.
   if (!currentUserData) {
     return null;
   }
 
+  // If the user gave us their name during signup, check here to influence styling on the page and whether we should show the name
   const hasUserGivenName =
     currentUserData.firstName && currentUserData.lastName;
 

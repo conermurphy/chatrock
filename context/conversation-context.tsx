@@ -1,3 +1,5 @@
+// This code was based on an article from Kent C. Dodds (https://kentcdodds.com/blog/how-to-use-react-context-effectively)
+
 import { conversationSchema } from '@/schema';
 import {
   Dispatch,

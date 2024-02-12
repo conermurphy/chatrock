@@ -12,6 +12,7 @@ interface IProps {
 export function ConversationPromptInput({ uuid }: IProps) {
   const { setConversation, isGenerating } = useConversation();
 
+  // onSubmit hanlder to update the conversaton in the DB with the user's new prompt and update the data in context
   const onSubmitHandler = async (data: PromptFormInputs) => {
     const updatedConversation = await updateConversation(uuid, data.prompt);
 

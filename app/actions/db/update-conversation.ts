@@ -13,9 +13,11 @@ export const updateConversation = async (uuid: string, prompt: string) => {
     throw new Error('User not found');
   }
 
+  // Fetch the current conversation from the DB
   const { conversation } = await getOneConversation(uuid);
 
   try {
+    // Update the target conversation with the new prompt from the user's form submission
     const { Attributes } = await db.send(
       new UpdateCommand({
         TableName: process.env.DB_TABLE_NAME,
@@ -37,6 +39,7 @@ export const updateConversation = async (uuid: string, prompt: string) => {
       })
     );
 
+    // Return the new conversation with the updated messages to the frontend
     return conversationSchema.parse(Attributes);
   } catch (error) {
     console.error(error);

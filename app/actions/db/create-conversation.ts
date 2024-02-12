@@ -14,9 +14,11 @@ export const createConversation = async (prompt: string) => {
     throw new Error('User not found');
   }
 
+  // Generate a randomUUID for the new conversation this will be used for the page UUID
   const uuid = randomUUID();
   const conversationUuid = `CONVERSATION#${uuid}`;
 
+  // Build the input for creating the new item in the DB
   const createBody = {
     pk: `USER#${currentUserData?.id}`,
     sk: conversationUuid,
@@ -34,6 +36,7 @@ export const createConversation = async (prompt: string) => {
   };
 
   try {
+    // Create the item in the DB using the prepared body
     await db.send(
       new PutCommand({
         TableName: process.env.DB_TABLE_NAME,
@@ -42,6 +45,7 @@ export const createConversation = async (prompt: string) => {
       })
     );
 
+    // Return the created data to the frontend
     return conversationSchema.parse(createBody);
   } catch (error) {
     console.error(error);
