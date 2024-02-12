@@ -17,7 +17,7 @@ export const createConversation = async (prompt: string) => {
   const uuid = randomUUID();
   const conversationUuid = `CONVERSATION#${uuid}`;
 
-  const craeteBody = {
+  const createBody = {
     pk: `USER#${currentUserData?.id}`,
     sk: conversationUuid,
     uuid,
@@ -37,14 +37,14 @@ export const createConversation = async (prompt: string) => {
     await db.send(
       new PutCommand({
         TableName: process.env.DB_TABLE_NAME,
-        Item: craeteBody,
+        Item: createBody,
         ReturnValues: 'ALL_OLD',
       })
     );
+
+    return conversationSchema.parse(createBody);
   } catch (error) {
     console.error(error);
     throw new Error('Failed to create conversation');
   }
-
-  return conversationSchema.parse(craeteBody);
 };

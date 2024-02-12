@@ -13,7 +13,6 @@ export default function PromptList() {
   const pathname = usePathname();
   const router = useRouter();
   const [deleteing, setDeleting] = useState(false);
-
   const [prompts, setPrompts] = useState<
     z.infer<typeof conversationSchema>[] | null
   >();

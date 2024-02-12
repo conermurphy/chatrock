@@ -7,11 +7,10 @@ import { useConversation } from '@/context/conversation-context';
 
 interface IProps {
   uuid: string;
-  isGenerating?: boolean;
 }
 
-export function ConversationPromptInput({ uuid, isGenerating }: IProps) {
-  const { setConversation } = useConversation();
+export function ConversationPromptInput({ uuid }: IProps) {
+  const { setConversation, isGenerating } = useConversation();
 
   const onSubmitHandler = async (data: PromptFormInputs) => {
     const updatedConversation = await updateConversation(uuid, data.prompt);
@@ -23,7 +22,6 @@ export function ConversationPromptInput({ uuid, isGenerating }: IProps) {
     <GenericPromptInput
       onSubmitHandler={onSubmitHandler}
       isGenerating={isGenerating}
-      uuid={uuid}
     />
   );
 }

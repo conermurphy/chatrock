@@ -33,32 +33,46 @@ export const generateResponse = async (uuid: string) => {
     }),
   };
 
-  const bedrockResponse = await bedrock.send(new InvokeModelCommand(input));
+  let generation = '';
 
-  const { generation } = bedrockResponseSchema.parse(
-    JSON.parse(new TextDecoder().decode(bedrockResponse.body))
-  );
+  try {
+    const bedrockResponse = await bedrock.send(new InvokeModelCommand(input));
 
-  const { Attributes } = await db.send(
-    new UpdateCommand({
-      TableName: process.env.DB_TABLE_NAME,
-      Key: {
-        pk: `USER#${currentUserData?.id}`,
-        sk: `CONVERSATION#${uuid}`,
-      },
-      UpdateExpression: 'set conversation = :c',
-      ExpressionAttributeValues: {
-        ':c': [
-          ...conversation,
-          {
-            author: 'ai',
-            content: generation,
-          },
-        ],
-      },
-      ReturnValues: 'ALL_NEW',
-    })
-  );
+    const response = bedrockResponseSchema.parse(
+      JSON.parse(new TextDecoder().decode(bedrockResponse.body))
+    );
 
-  return conversationSchema.parse(Attributes);
+    generation = response.generation;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to generate response from Bedrock');
+  }
+
+  try {
+    const { Attributes } = await db.send(
+      new UpdateCommand({
+        TableName: process.env.DB_TABLE_NAME,
+        Key: {
+          pk: `USER#${currentUserData?.id}`,
+          sk: `CONVERSATION#${uuid}`,
+        },
+        UpdateExpression: 'set conversation = :c',
+        ExpressionAttributeValues: {
+          ':c': [
+            ...conversation,
+            {
+              author: 'ai',
+              content: generation,
+            },
+          ],
+        },
+        ReturnValues: 'ALL_NEW',
+      })
+    );
+
+    return conversationSchema.parse(Attributes);
+  } catch (error) {
+    console.log(error);
+    throw new Error('Failed to update conversation');
+  }
 };

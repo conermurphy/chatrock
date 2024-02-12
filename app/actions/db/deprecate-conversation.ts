@@ -28,6 +28,4 @@ export const deprecateConversation = async (uuid: string) => {
     console.log(error);
     throw new Error('Failed to deprecate conversation');
   }
-
-  return;
 };

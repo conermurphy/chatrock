@@ -9,13 +9,11 @@ import { PromptFormInputs } from '@/types';
 
 interface IProps {
   isGenerating?: boolean;
-  uuid?: string;
   onSubmitHandler: (data: PromptFormInputs) => Promise<void>;
 }
 
 export function GenericPromptInput({
   isGenerating = false,
-  uuid,
   onSubmitHandler,
 }: IProps) {
   const {

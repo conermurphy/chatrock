@@ -8,23 +8,28 @@ import { currentUser } from '@clerk/nextjs';
 export const getAllConversations = async (includeDeprecated = false) => {
   const currentUserData = await currentUser();
 
-  const { Items } = await db.send(
-    new QueryCommand({
-      TableName: process.env.DB_TABLE_NAME,
-      ExpressionAttributeValues: {
-        ':pk': `USER#${currentUserData?.id}`,
-        ':sk': 'CONVERSATION#',
-      },
-      KeyConditionExpression: 'pk = :pk AND begins_with(sk, :sk)',
-      Limit: 100,
-    })
-  );
+  try {
+    const { Items } = await db.send(
+      new QueryCommand({
+        TableName: process.env.DB_TABLE_NAME,
+        ExpressionAttributeValues: {
+          ':pk': `USER#${currentUserData?.id}`,
+          ':sk': 'CONVERSATION#',
+        },
+        KeyConditionExpression: 'pk = :pk AND begins_with(sk, :sk)',
+        Limit: 100,
+      })
+    );
 
-  const parsedPrompts = conversationSchema.array().nullish().parse(Items);
+    const parsedPrompts = conversationSchema.array().nullish().parse(Items);
 
-  if (includeDeprecated) {
-    return parsedPrompts;
+    if (includeDeprecated) {
+      return parsedPrompts;
+    }
+
+    return parsedPrompts?.filter((prompt) => prompt.status === 'ACTIVE');
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to fetch all conversations');
   }
-
-  return parsedPrompts?.filter((prompt) => prompt.status === 'ACTIVE');
 };
