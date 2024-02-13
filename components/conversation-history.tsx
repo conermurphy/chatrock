@@ -9,7 +9,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { IoTrashBin } from 'react-icons/io5';
 import { deprecateConversation } from '@/app/actions/db/deprecate-conversation';
 
-export default function PromptList() {
+export default function ConversationHistory() {
   const pathname = usePathname();
   const router = useRouter();
   const [deleting, setDeleting] = useState(false);

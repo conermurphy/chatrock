@@ -1,7 +1,7 @@
 import { UserButton, currentUser } from '@clerk/nextjs';
 import { Icon } from './icon';
 import Link from 'next/link';
-import PromptList from './prompt-list';
+import ConversationHistory from './conversation-history';
 import { IoAddOutline } from 'react-icons/io5';
 
 export async function Sidebar() {
@@ -31,7 +31,7 @@ export async function Sidebar() {
         </Link>
       </header>
 
-      <PromptList />
+      <ConversationHistory />
       <footer
         className={`w-full flex flex-row ${!hasUserGivenName && 'justify-center'}`}
       >
